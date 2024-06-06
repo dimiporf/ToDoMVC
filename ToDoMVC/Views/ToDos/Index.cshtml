@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ToDoMVC.Models.ToDo>
+
+@{
+    ViewBag.Title = "ToDos";
+}
+
+<h2>ToDos</h2>
+
+@using (Html.BeginForm("AddToDo", "ToDos"))
+{
+    <input type="text" name="toDoTitle" />
+    <input type="submit" value="Add ToDo" />
+}
+
+<ul>
+    @foreach (var toDo in Model)
+    {
+        <li>
+            @toDo.Title
+            <button onclick="location.href='@Url.Action("DeleteToDo", "ToDos", new { toDoId = toDo.Id })'">Delete</button>
+            <form method="post" action="@Url.Action("SetToDoCompleted", "ToDos")" style="display:inline;">
+                <input type="hidden" name="toDoId" value="@toDo.Id" />
+                <input type="checkbox" name="isCompleted" value="true" @(toDo.IsCompleted ? "checked" : "") onchange="this.form.submit()" />
+            </form>
+        </li>
+    }
+</ul>
